@@ -1,9 +1,8 @@
-const http = require('http');
-const url = require('url');
-const fs = require('fs');
+import * as http from 'node:http';
+import * as fs from 'node:fs';
 
 http.createServer(function (req, res) {
-  let q = url.parse(req.url, true);
+  let q = new URL(req.url, 'http://localhost:8080');
 
   if (q.pathname === '/') {
     fs.readFile('index.html', function(err, data) {
@@ -25,7 +24,7 @@ http.createServer(function (req, res) {
     })
   } else {
     fs.readFile('404.html', function(err, data) {
-      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.writeHead(404, {'Content-Type': 'text/html'});
       res.write(data);
       return res.end();
     })
